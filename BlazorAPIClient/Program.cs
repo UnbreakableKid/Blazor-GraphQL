@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using BlazorAPIClient.DataServices;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,9 @@ namespace BlazorAPIClient
 
             //regester in the DI container the HttpClient that will be used to make the API calls to the server 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["api_base_url"]) });
+
+            //regester in the DI container the DataService that will be used to make the API calls to the server
+            builder.Services.AddHttpClient<ISpaceXDataService, GraphQLSpaceXDataService>(spds => spds.BaseAddress = new Uri(builder.Configuration["api_base_url"]));
 
             await builder.Build().RunAsync();
         }
